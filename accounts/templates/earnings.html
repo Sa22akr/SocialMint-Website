@@ -1,0 +1,196 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SocialMint — Earnings</title>
+
+  <!-- ICONS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'earnings.css' %}">
+</head>
+
+<body>
+
+<!-- ========================= NAV ========================= -->
+<header class="earn-header">
+  <nav class="earn-nav container">
+
+    <a class="nav-logo" href="{% url 'homepage' %}">
+      <img src="{% static 'img/logo.png' %}" alt="SocialMint Logo">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="{% url 'homepage' %}">Home</a></li>
+      <li><a href="{% url 'about_page' %}">About</a></li>
+      <li><a class="active" href="#">Earnings</a></li>
+      <li><a href="#">Marketplace</a></li>
+      <li><a href="#">Support</a></li>
+    </ul>
+
+    <ul class="nav-actions">
+      <li><a class="login" href="{% url 'login_page' %}">Login</a></li>
+      <li><a class="btn-primary" href="{% url 'signup_page' %}">Create Account</a></li>
+    </ul>
+
+  </nav>
+</header>
+
+
+<!-- ========================= HERO ========================= -->
+<section class="earn-hero container">
+
+  <h1>Earn in Multiple Ways</h1>
+
+  <p class="sub">
+    Earn daily by posting adverts, reselling products and performing social tasks.
+  </p>
+
+  <p class="note">
+    One-time activation fee of £10 is required to start earning.
+  </p>
+
+  <div class="hero-buttons">
+
+    <button class="big-btn yellow">
+      CLICK TO RESELL PRODUCTS & EARN UP TO £1000 MONTHLY
+      <span class="tag">HOT</span>
+    </button>
+
+    <div class="split-buttons">
+      <button class="big-btn green">POST ADVERTS</button>
+      <button class="big-btn white">ENGAGEMENT TASKS</button>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ========================= TASK GRID ========================= -->
+<section class="task-grid container">
+
+  {% comment %}
+  Repeatable item — could be made dynamic later
+  {% endcomment %}
+
+  <article class="task-card">
+    <img src="{% static 'img/instagram.png' %}">
+    <h3>Post Adverts on Instagram</h3>
+    <p class="earn">Earnings: £1 per Advert Post</p>
+    <button class="select">SELECT</button>
+  </article>
+
+  <article class="task-card">
+    <img src="{% static 'img/twitter.png' %}">
+    <h3>Post Adverts on Twitter</h3>
+    <p class="earn">Earnings: £1 per Advert Post</p>
+    <button class="select">SELECT</button>
+  </article>
+
+  <article class="task-card">
+    <img src="{% static 'img/tiktok.png' %}">
+    <h3>Post Adverts on TikTok</h3>
+    <p class="earn">Earnings: £1 per Advert Post</p>
+    <button class="select">SELECT</button>
+  </article>
+
+  <article class="task-card">
+    <img src="{% static 'img/facebook.png' %}">
+    <h3>Post Adverts on Facebook</h3>
+    <p class="earn">Earnings: £1 per Advert Post</p>
+    <button class="select">SELECT</button>
+  </article>
+
+  <article class="task-card">
+    <img src="{% static 'img/whatsapp.png' %}">
+    <h3>Post Adverts on WhatsApp</h3>
+    <p class="earn">Earnings: £0.50 per Status Post</p>
+    <button class="select">SELECT</button>
+  </article>
+
+</section>
+
+
+<!-- ========================= CTA ========================= -->
+<section class="cta container">
+
+  <h2>Advertise & Earn Daily</h2>
+  <p class="sub">Join thousands earning income with SocialMint.</p>
+
+  <div class="cta-buttons">
+    <a class="btn-green" href="{% url 'signup_page' %}">CREATE FREE ACCOUNT</a>
+    <a class="btn-outline" href="{% url 'login_page' %}">LOGIN</a>
+  </div>
+
+</section>
+
+ <footer class="site-footer">
+
+  <div class="footer-top">
+    <div class="footer-cta">
+      <h3>Advertise and Earn Daily With SocialMint</h3>
+      <p>Join thousands of people using SocialMint.</p>
+      <div class="cta-actions">
+        <a class="btn primary btn-xl" href="{% url 'signup_page' %}">Create Free Account</a>
+        <a class="btn outline btn-xl" href="{% url 'login_page' %}">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container footer-links">
+    
+    <div>
+      <h5>Company</h5>
+      <ul>
+        <li><a href="{% url 'about_page' %}">About</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="{% url 'signup_page' %}">Create Account</a></li>
+        <li><a href="{% url 'login_page' %}">Login</a></li>
+        <li><a href="{% url 'earnings_page' %}">Earnings</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h5>Support</h5>
+      <ul>
+        <li><a href="#">Help</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h5>Contact</h5>
+      <p class="contact-line">
+        <i class="fa-regular fa-envelope"></i> elkingsman.xo@gmail.com
+      </p>
+      <div class="socials">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container copyright">
+    <p>SocialMint © <span id="year"></span>. All Rights Reserved</p>
+  </div>
+
+</footer>
+
+
+
+<script src="{% static 'earnings.js' %}"></script>
+
+</body>
+</html>
