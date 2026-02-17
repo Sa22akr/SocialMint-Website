@@ -18,7 +18,7 @@ import json
 # PUBLIC PAGES
 # ==========================
 def homepage(request):
-    return render(request, "home.html")
+    return render(request, "index.html")
 
 def login_page(request):
     return render(request, "login.html")
