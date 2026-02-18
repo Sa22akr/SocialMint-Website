@@ -138,15 +138,176 @@
             </div>
         </section>
 
-        <!-- ==== AVAILABLE TASKS ==== -->
+        <!-- ==== POST TASKS ==== -->
         <section class="tasks-section">
 
-            <h2>Available Tasks</h2>
-            <p>Select any task to start earning</p>
+            <h2>Post Tasks</h2>
+            <p>Select any task to start posting</p>
 
-            <div class="task-list" id="taskList">
-                <!-- tasks load here dynamically -->
-            </div>
+            <div class="task-list">
+
+    <!-- TASK 1 -->
+    <div class="task-card">
+
+    <!-- LEFT SIDE -->
+    <div class="task-content">
+
+        <div class="task-icon">
+    <img src="{% static 'img/follow.png' %}" alt="Follow">
+</div>
+
+
+        <div class="task-details">
+            <h3>Get Real People to Follow Your Page on Social Media</h3>
+            <p class="earnings">Pricing: <strong>£5.00 per action</strong></p>
+            <p class="desc">
+                Get People to follow your social media pages. You can get any number of people to follow your social media page. No social media login details required.
+            </p>
+            <div class="platforms">
+    <span>Platforms:</span>
+
+    <img src="{% static 'img/facebook.png' %}" alt="Facebook">
+    <img src="{% static 'img/instagram.png' %}" alt="Instagram">
+    <img src="{% static 'img/twitter.png' %}" alt="Twitter">
+    <img src="{% static 'img/tiktok.png' %}" alt="TikTok">
+        </div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+<button class="select-btn"
+        data-title="Get Real People to Follow Your Page on Social Media"
+        data-price="£5.00 per action"
+        data-description="Get People to follow your social media pages. No login details required."
+        data-icon="{% static 'img/follow.png' %}"
+        data-type="follow"
+        data-amount="5">
+    SELECT
+</button>
+
+</div>
+
+
+
+    <!-- TASK 2 -->
+<div class="task-card">
+
+    <!-- LEFT SIDE -->
+    <div class="task-content">
+
+        <div class="task-icon">
+    <img src="{% static 'img/like.png' %}" alt="Like">
+</div>
+        <div class="task-details">
+            <h3>Get People to Like Your Social Media Posts</h3>
+            <p class="earnings">Pricing: <strong>£5.00 per action</strong></p>
+            <p class="desc">
+                Get People to Like your social media posts. You can get any number of people to like your social media posts. No social media login detail is required. Simply enter your post link to get started
+            </p>
+            <div class="platforms">
+    <span>Platforms:</span>
+
+    <img src="{% static 'img/facebook.png' %}" alt="Facebook">
+    <img src="{% static 'img/instagram.png' %}" alt="Instagram">
+    <img src="{% static 'img/twitter.png' %}" alt="Twitter">
+    <img src="{% static 'img/tiktok.png' %}" alt="TikTok">
+        </div>
+    </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+<button class="select-btn"
+        data-title="Get People to Like Your Social Media Posts"
+        data-price="£5.00 per action"
+        data-description="Get People to like your posts. Simply enter your post link to get started."
+        data-icon="{% static 'img/like.png' %}"
+        data-type="like"
+        data-amount="5">
+    SELECT
+</button>
+</div>
+
+    <!-- TASK 3 -->
+<div class="task-card">
+
+    <!-- LEFT SIDE -->
+    <div class="task-content">
+
+        <div class="task-icon">
+    <img src="{% static 'img/youtube.png' %}" alt="Subscribe">
+</div>
+
+
+        <div class="task-details">
+            <h3>
+Get People to Subscribe on your Youtube Channel</h3>
+            <p class="earnings">Pricing: <strong>£5.00 per action</strong></p>
+            <p class="desc">
+                Get People to Subcribe on your Youtube Channel. The users will subscribe on your channel thereby increasing your subscribers, views, comments and likes. You can get any number of persons to subscribe on your Youtube Channel. Simply enter your Youtube Channel Link to get started.
+                </p>
+                <div class="platforms">
+    <span>Platforms:</span>
+    <img src="{% static 'img/youtube.png' %}" alt="youtube">
+        </div>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+ <button class="select-btn"
+        data-title="Get People to Subscribe on your Youtube Channel"
+        data-price="£5.00 per action"
+        data-description="Increase your subscribers and engagement by getting real users to subscribe."
+        data-icon="{% static 'img/youtube.png' %}"
+        data-type="youtube"
+        data-amount="5">
+    SELECT
+</button>
+
+
+</div>
+
+    <!-- TASK 4 -->
+<div class="task-card">
+
+    <!-- LEFT SIDE -->
+    <div class="task-content">
+
+        <div class="task-icon">
+    <img src="{% static 'img/comment.png' %}" alt="Comment">
+</div>
+
+
+        <div class="task-details">
+            <h3>Get Real People to Comment on Your Social Media Posts</h3>
+            <p class="earnings">Pricing: <strong>£5.00 per action</strong></p>
+            <p class="desc">
+                Get Real People to Comment on your social media posts. We DO NOT allow fake users or bots to comment on posts.
+                </p>
+                <div class="platforms">
+    <span>Platforms:</span>
+
+    <img src="{% static 'img/facebook.png' %}" alt="Facebook">
+    <img src="{% static 'img/instagram.png' %}" alt="Instagram">
+    <img src="{% static 'img/twitter.png' %}" alt="Twitter">
+    <img src="{% static 'img/tiktok.png' %}" alt="TikTok">
+</div>
+
+        </div>
+
+    </div>
+<button class="select-btn"
+        data-title="Get Real People to Comment on Your Social Media Posts"
+        data-price="£5.00 per action"
+        data-description="We do not allow bots. Only real users will comment."
+        data-icon="{% static 'img/comment.png' %}"
+        data-type="comment"
+        data-amount="5">
+    SELECT
+</button>
+</div>
+</div>
+
 
         </section>
 
@@ -327,7 +488,6 @@
     <p class="modal-msg" id="fundMsg"></p>
   </div>
 </div>
-
 <!-- ======================
      WITHDRAW POPUP MODAL
 ====================== -->
@@ -338,6 +498,7 @@
     <h2 class="modal-title">Withdraw</h2>
     <p class="modal-sub">Enter your bank details (demo) and amount.</p>
 
+    <!-- Amount -->
     <input
       type="number"
       id="withdrawAmountInput"
@@ -347,14 +508,16 @@
       step="0.01"
     />
 
+    <!-- Sort Code -->
     <input
       type="text"
       id="sortCodeInput"
       class="modal-input"
-      placeholder="Sort code (e.g. 12-34-56)"
-      maxlength="8"
+      placeholder="Sort code (6 digits e.g. 123456)"
+      maxlength="6"
     />
 
+    <!-- Account Number -->
     <input
       type="text"
       id="accountNumberInput"
@@ -363,26 +526,81 @@
       maxlength="8"
     />
 
-    <button class="modal-action" id="withdrawSubmitBtn">Withdraw</button>
+    <button class="modal-action" id="withdrawSubmitBtn">
+      Withdraw
+    </button>
 
     <p class="modal-msg" id="withdrawMsg"></p>
   </div>
 </div>
 
 
-<div class="modal-bg" id="taskModal">
-  <div class="modal-box">
-    <button onclick="taskModal.style.display='none'">✖</button>
+<!-- ================= TASK ACTION MODAL ================= -->
+<div class="modal-bg" id="taskActionModal" style="display:none;">
+  <div class="task-action-container">
 
-    <h2 id="taskTitle"></h2>
-    <p id="taskInstructions"></p>
+    <button class="modal-close" id="taskActionClose">✖</button>
 
-    <a id="taskLink" target="_blank" style="display:none;">Open Task</a>
+    <!-- Header -->
+    <div class="task-action-header">
+      <div class="task-icon-wrap">
+        <img src="/static/img/follow.png" id="taskActionIcon">
+      </div>
 
-    <h3 id="taskReward"></h3>
+      <div>
+        <h2 id="taskActionTitle">Task Title</h2>
+        <p class="task-price">
+          Reward: <strong id="taskActionPrice">£0.00 per action</strong>
+        </p>
+        <p id="taskActionDescription">
+          Task description goes here.
+        </p>
+      </div>
+    </div>
+
+    <hr>
+
+<!-- Select Platform -->
+<div class="form-group" id="platformGroup">
+  <label>Select Platform</label>
+  <select id="taskPlatform">
+        <option value="">Select Platform</option>
+        <option>Instagram</option>
+        <option>Facebook</option>
+        <option>Twitter</option>
+        <option>TikTok</option>
+      </select>
+    </div>
+
+    <!-- Quantity -->
+<div class="form-group">
+  <label id="quantityLabel">Number of Followers You Want</label>
+  <input type="number" id="taskQuantity" placeholder="Enter quantity" min="1">
+</div>
+
+    <!-- Link -->
+    <div class="form-group">
+      <label>Your Social Media Page/Profile Link</label>
+      <input type="url" id="taskLink" placeholder="https://example.com">
+    </div>
+
+    <!-- Total -->
+    <div class="task-total-bar">
+      <div>
+        <span>You will pay:</span>
+        <h3 id="taskTotal">£0.00</h3>
+      </div>
+
+      <button class="submit-task-btn">
+        SUBMIT AND MAKE PAYMENT
+      </button>
+    </div>
+
   </div>
 </div>
+
 </div>
+
 
 
 <!-- ====================== JS ====================== -->

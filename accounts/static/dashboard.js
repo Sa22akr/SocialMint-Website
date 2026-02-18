@@ -98,56 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  // ================================
-  // TASK SELECT → OPEN MODAL
-  // ================================
-  document.addEventListener("click", async function(e) {
-    const btn = e.target.closest(".task-select-btn");
-    if (!btn) return;
-
-    const id = btn.dataset.id;
-
-    try {
-      const res = await fetch(`/api/task/${id}/`);
-      const data = await res.json();
-
-      document.getElementById("taskTitle").innerText = data.title;
-      document.getElementById("taskInstructions").innerText = data.instructions;
-      document.getElementById("taskReward").innerText = `Earn ${money(data.payout)}`;
-
-      const link = document.getElementById("taskLink");
-
-      if (data.link) {
-        link.href = data.link;
-        link.style.display = "inline-block";
-      } else {
-        link.style.display = "none";
-      }
-
-      document.getElementById("taskModal").style.display = "flex";
-
-    } catch (err) {
-      console.error("TASK DETAIL ERROR:", err);
-    }
-  });
-
-
-  // ================================
-  // CLOSE TASK MODAL
-  // ================================
-  const taskModal = document.getElementById("taskModal");
-  const taskClose = document.getElementById("taskClose");
-
-  taskClose?.addEventListener("click", () => {
-    taskModal.style.display = "none";
-  });
-
-  window.addEventListener("click", (e) => {
-    if (e.target === taskModal) {
-      taskModal.style.display = "none";
-    }
-  });
-
 
   // ================================
   // LOGOUT
@@ -289,5 +239,187 @@ adClose?.addEventListener("click", () => {
 window.addEventListener("click", (e) => {
   if (e.target === adModal) {
     adModal.style.display = "none";
+  }
+});
+
+// ================= TASK ACTION MODAL =================
+
+const taskModal = document.getElementById("taskActionModal");
+const closeTaskModal = document.getElementById("taskActionClose");
+
+const modalTitle = document.getElementById("taskActionTitle");
+const modalPrice = document.getElementById("taskActionPrice");
+const modalDescription = document.getElementById("taskActionDescription");
+const modalIcon = document.getElementById("taskActionIcon");
+
+const quantityLabel = document.getElementById("quantityLabel");
+const platformGroup = document.getElementById("platformGroup");
+
+const quantityInput = document.getElementById("taskQuantity");
+const totalDisplay = document.getElementById("taskTotal");
+
+let currentPrice = 0;
+
+
+// ===== OPEN MODAL =====
+document.querySelectorAll(".select-btn").forEach(button => {
+    button.addEventListener("click", function () {
+
+        // Set modal content
+        modalTitle.innerText = this.dataset.title;
+        modalPrice.innerText = this.dataset.price;
+        modalDescription.innerText = this.dataset.description;
+        modalIcon.src = this.dataset.icon;
+
+        // Store numeric price
+        currentPrice = parseFloat(this.dataset.amount) || 0;
+
+        // Reset fields
+        quantityInput.value = "";
+        totalDisplay.innerText = "£0.00";
+
+        const type = this.dataset.type;
+
+        // Default settings
+        platformGroup.style.display = "block";
+
+        if (type === "youtube") {
+            quantityLabel.innerText = "Number of Subscribers You Want";
+            platformGroup.style.display = "none";
+            document.getElementById("taskLink").placeholder =
+                "Enter your YouTube channel link";
+        }
+
+        else if (type === "like") {
+            quantityLabel.innerText = "Number of Likes You Want";
+            document.getElementById("taskLink").placeholder =
+                "Enter your post link";
+        }
+
+        else if (type === "comment") {
+            quantityLabel.innerText = "Number of Comments You Want";
+            document.getElementById("taskLink").placeholder =
+                "Enter your post link";
+        }
+
+        else {
+            quantityLabel.innerText = "Number of Followers You Want";
+            document.getElementById("taskLink").placeholder =
+                "Enter your page/profile link";
+        }
+
+        taskModal.style.display = "flex";
+    });
+});
+
+
+// ===== LIVE TOTAL CALCULATION =====
+quantityInput.addEventListener("input", function () {
+
+    const quantity = parseFloat(this.value);
+
+    if (!isNaN(quantity) && quantity > 0) {
+        const total = quantity * currentPrice;
+        totalDisplay.innerText = "£" + total.toFixed(2);
+    } else {
+        totalDisplay.innerText = "£0.00";
+    }
+});
+
+
+// ===== CLOSE MODAL =====
+closeTaskModal.addEventListener("click", function () {
+    taskModal.style.display = "none";
+});
+
+window.addEventListener("click", function (e) {
+    if (e.target === taskModal) {
+        taskModal.style.display = "none";
+    }
+});
+
+
+
+  // ================================
+// WITHDRAW MODAL (OPEN -> INPUT -> WITHDRAW)
+// ================================
+const withdrawModal = document.getElementById("withdrawModal");
+const withdrawBtn = document.querySelector(".withdraw");
+const withdrawClose = document.getElementById("withdrawClose");
+const withdrawAmountInput = document.getElementById("withdrawAmountInput");
+const sortCodeInput = document.getElementById("sortCodeInput");
+const accountNumberInput = document.getElementById("accountNumberInput");
+const withdrawSubmitBtn = document.getElementById("withdrawSubmitBtn");
+const withdrawMsg = document.getElementById("withdrawMsg");
+
+function openWithdrawModal() {
+  if (!withdrawModal) return;
+  withdrawMsg.textContent = "";
+  withdrawAmountInput.value = "";
+  sortCodeInput.value = "";
+  accountNumberInput.value = "";
+  withdrawModal.style.display = "flex";
+  withdrawAmountInput.focus();
+}
+
+function closeWithdrawModal() {
+  if (!withdrawModal) return;
+  withdrawModal.style.display = "none";
+}
+
+withdrawBtn?.addEventListener("click", openWithdrawModal);
+withdrawClose?.addEventListener("click", closeWithdrawModal);
+
+withdrawModal?.addEventListener("click", (e) => {
+  if (e.target === withdrawModal) closeWithdrawModal();
+});
+
+// basic formatting helpers (optional)
+sortCodeInput?.addEventListener("input", () => {
+  // allow digits and hyphen only
+  sortCodeInput.value = sortCodeInput.value.replace(/[^\d-]/g, "");
+});
+
+accountNumberInput?.addEventListener("input", () => {
+  accountNumberInput.value = accountNumberInput.value.replace(/[^\d]/g, "");
+});
+
+withdrawSubmitBtn?.addEventListener("click", async () => {
+  const amount = withdrawAmountInput.value;
+  const sort_code = sortCodeInput.value;
+  const account_number = accountNumberInput.value;
+
+  withdrawSubmitBtn.disabled = true;
+  withdrawMsg.textContent = "Processing...";
+
+  try {
+    const res = await fetch("/api/demo-withdraw/", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount, sort_code, account_number })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      withdrawMsg.textContent = data.error || "Withdrawal failed.";
+      return;
+    }
+
+    // update UI instantly
+    document.getElementById("balanceAmount").textContent = money(data.balance);
+
+    // resync from backend
+    loadUser();
+
+    withdrawMsg.textContent = "Withdrawal successful (demo)!";
+    setTimeout(closeWithdrawModal, 700);
+
+  } catch (err) {
+    console.error("WITHDRAW ERROR:", err);
+    withdrawMsg.textContent = "Network error. Try again.";
+  } finally {
+    withdrawSubmitBtn.disabled = false;
   }
 });

@@ -776,108 +776,163 @@ a {
   white-space:nowrap;
 }
 
-/* ======================
-   TASK LIST (SCREENSHOT STYLE)
-====================== */
-.task-row{
-  display:flex;
-  gap:18px;
+/* ================= TASK ACTION MODAL ================= */
+
+.task-action-container{
   background:#fff;
-  border-radius:16px;
-  padding:18px;
-  margin-top:14px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  width:650px;
+  max-width:95%;
+  border-radius:14px;
+  padding:25px;
+  position:relative;
+  animation:fadeIn .2s ease;
+}
+
+.task-action-header{
+  display:flex;
+  gap:20px;
   align-items:flex-start;
-  border: 1px solid #eee;
 }
 
-.task-left{
-  width:140px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:14px;
+.task-icon-wrap img{
+  width:70px;
+  height:70px;
 }
 
-.task-big-icon{
-  width:90px;
-  height:90px;
-  object-fit:contain;
-}
-
-.task-select-btn{
-  width:110px;
-  padding:12px 0;
-  border:1px solid #ddd;
-  border-radius:10px;
-  background:#fff;
-  font-weight:700;
-  cursor:pointer;
-  letter-spacing: 1px;
-}
-
-.task-mid{
-  flex:1;
-  padding-top: 6px;
-}
-
-.task-title{
-  margin:0 0 8px;
-  font-size:22px;
-}
-
-.task-earn{
-  margin:0 0 10px;
-  font-size:14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.task-desc{
-  margin:12px 0 14px;
-  font-size:14px;
+.task-price{
+  margin-top:5px;
+  font-size:15px;
   color:#444;
-  line-height:1.45;
-  max-width: 680px;
 }
 
-.task-platforms{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.form-group{
+  margin-top:20px;
 }
 
-.task-platform-label{
+.form-group label{
+  font-weight:600;
+  display:block;
+  margin-bottom:6px;
+}
+
+.form-group select,
+.form-group input{
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #ddd;
   font-size:14px;
-  font-weight:700;
 }
 
-.platform-icons{
+.task-total-bar{
+  margin-top:30px;
+  padding:15px;
+  background:#f7f7f7;
+  border-radius:10px;
   display:flex;
-  gap:8px;
+  justify-content:space-between;
   align-items:center;
 }
 
-.platform-icon{
-  width:22px;
-  height:22px;
-  object-fit:contain;
-}
-
-.task-right{
-  min-width:180px;
-  display:flex;
-  justify-content:flex-end;
-  align-items:flex-start;
-  padding-top: 70px;
-}
-
-.task-badge{
-  background:#1f9d4a;
+.submit-task-btn{
+  background:linear-gradient(90deg,#7b2ff7,#9b30ff);
   color:#fff;
-  font-weight:700;
-  font-size:12px;
-  padding:8px 10px;
-  border-radius:10px;
-  white-space:nowrap;
+  border:none;
+  padding:12px 20px;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
 }
+
+.submit-task-btn:hover{
+  opacity:.9;
+}
+
+
+/* ================= TASK SECTION ================= */
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.task-card {
+    background: #f5f5f5;
+    border-radius: 14px;
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.task-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 22px;
+}
+
+
+.task-icon.blue {
+    background: #1877f2;
+}
+
+.task-details h3 {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+}
+
+.task-details p {
+    margin: 4px 0;
+    color: #555;
+}
+
+.earnings {
+    font-weight: 500;
+}
+
+.desc {
+    max-width: 1200px;
+}
+
+.select-btn {
+    margin-top: 10px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+}
+
+.platforms {
+    margin-top: 6px;        /* reduce vertical spacing */
+    display: flex;
+    align-items: center;
+    gap: 4px;               /* reduce space between icons */
+}
+
+.platforms span {
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 2px;      /* reduce space after "Platforms:" */
+}
+
+.platforms img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+
