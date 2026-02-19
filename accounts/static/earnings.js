@@ -57,13 +57,48 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", logout);
   });
 
+ // ================================
+// MEMBERSHIP JS
+// ================================
+const payMembershipBtn = document.getElementById("payMembershipBtn");
+
+payMembershipBtn?.addEventListener("click", async () => {
+
+    payMembershipBtn.disabled = true;
+
+    try {
+        const res = await fetch("/pay-membership/", {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.error);
+            payMembershipBtn.disabled = false;
+            return;
+        }
+
+        alert("Membership Activated!");
+
+        window.location.href = "/dashboard/";
+
+    } catch (err) {
+        alert("Network error.");
+    }
+
+    payMembershipBtn.disabled = false;
+});
+
+
 
  
   // ================================
   // INIT
   // ================================
   loadUser();
-  loadTasks();
 
 });
 
@@ -189,23 +224,30 @@ document.querySelectorAll(".select-btn").forEach(button => {
 
 
 // ===== LIVE TOTAL CALCULATION =====
-quantityInput.addEventListener("input", function () {
+if (quantityInput) {
+    quantityInput.addEventListener("input", function () {
 
-    const quantity = parseFloat(this.value);
+        const quantity = parseFloat(this.value);
 
-    if (!isNaN(quantity) && quantity > 0) {
-        const total = quantity * currentPrice;
-        totalDisplay.innerText = "£" + total.toFixed(2);
-    } else {
-        totalDisplay.innerText = "£0.00";
-    }
-});
+        if (!isNaN(quantity) && quantity > 0) {
+            const total = quantity * currentPrice;
+            totalDisplay.innerText = "£" + total.toFixed(2);
+        } else {
+            totalDisplay.innerText = "£0.00";
+        }
+
+    });
+}
+
 
 
 // ===== CLOSE MODAL =====
-closeTaskModal.addEventListener("click", function () {
-    taskModal.style.display = "none";
-});
+if (closeTaskModal) {
+    closeTaskModal.addEventListener("click", function () {
+        taskModal.style.display = "none";
+    });
+}
+
 
 window.addEventListener("click", function (e) {
     if (e.target === taskModal) {

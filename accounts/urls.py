@@ -12,7 +12,6 @@ from .views import (
     get_tasks,
     get_single_task,
     more_page,
-    get_task,
     forgot_password_page,   
     forgot_password_api,
     demo_fund,
@@ -28,6 +27,7 @@ from .views import (
     seller_history,
     earnings,
     create_task,
+    pay_membership,
 )
 
 
@@ -67,6 +67,7 @@ urlpatterns = [
     path("api/demo-withdraw/", demo_withdraw, name="demo_withdraw_api"),
     path("delete-product/<int:product_id>/", delete_product, name="delete_product"),
     path("edit-product/<int:product_id>/", edit_product, name="edit_product"),
+    path("pay-membership/", pay_membership, name="pay_membership"),
 
 
     # ======================
@@ -84,7 +85,6 @@ urlpatterns = [
 # TASK APIs
 # ======================
 path("api/tasks/", get_tasks, name="tasks_api"),
-path("api/task/<int:task_id>/", get_task, name="task_single_api"),
 path("create-task/", create_task, name="create_task"),
 path("more/", more_page, name="more_page"),
 

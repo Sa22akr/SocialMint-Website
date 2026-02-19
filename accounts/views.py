@@ -374,9 +374,17 @@ def delete_product(request, product_id):
 # TASK APIs
 # ==========================
 
+
 @login_required
 def get_tasks(request):
-    tasks = Task.objects.all()
+
+    # 🔒 BLOCK NON-MEMBERS
+    if not request.user.is_member:
+        return JsonResponse({
+            "error": "Membership required to access tasks."
+        }, status=403)
+
+    tasks = Task.objects.filter(available__gt=0)
 
     data = [
         {
@@ -388,7 +396,7 @@ def get_tasks(request):
             "instructions": t.instructions,
             "short_desc": t.short_desc,
             "platforms": t.platforms,
-            "task_type": t.task_type,   # ⭐ NEW
+            "task_type": t.task_type,
         }
         for t in tasks
     ]
@@ -396,20 +404,6 @@ def get_tasks(request):
     return JsonResponse({"tasks": data})
 
 
-
-@login_required
-def get_task(request, task_id):
-    t = get_object_or_404(Task, id=task_id)
-
-    return JsonResponse({
-        "id": t.id,
-        "title": t.title,
-        "payout": t.payout,
-        "available": t.available,
-        "instructions": t.instructions if hasattr(t, "instructions") else "Complete task",
-        "link": t.link if hasattr(t, "link") else None,
-        "icon": t.icon,
-    })
 
 @login_required
 def get_single_task(request, task_id):
@@ -425,9 +419,7 @@ def get_single_task(request, task_id):
 
     return JsonResponse(data)
 
-# ==========================
-# CREATE TASK
-# ==========================
+
 # ==========================
 # CREATE TASK (POST FROM FORM)
 # ==========================
@@ -477,6 +469,37 @@ def create_task(request):
         "message": "Task created successfully",
         "new_balance": str(user.balance)
     })
+
+
+# ==========================
+# MEMBERSHIP PAYMENT
+# ==========================
+@csrf_exempt
+@login_required
+def pay_membership(request):
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST required"}, status=400)
+
+    membership_fee = Decimal("10.00")
+    user = request.user
+
+    if user.is_member:
+        return JsonResponse({"error": "Already a member."}, status=400)
+
+    if user.balance < membership_fee:
+        return JsonResponse({"error": "Insufficient balance."}, status=400)
+
+    user.balance -= membership_fee
+    user.is_member = True
+    user.save(update_fields=["balance", "is_member"])
+
+    return JsonResponse({
+        "message": "Membership activated!",
+        "new_balance": str(user.balance),
+        "is_member": True
+    })
+
 
 
 @login_required

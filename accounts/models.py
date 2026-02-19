@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -7,6 +7,8 @@ class User(AbstractUser):
     earnings = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     tasks_completed = models.IntegerField(default=0)
     referrals = models.IntegerField(default=0)
+
+    is_member = models.BooleanField(default=False)
 
 class Task(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
