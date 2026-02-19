@@ -98,6 +98,72 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+// ===== SUBMIT TASK =====
+const submitTaskBtn = document.getElementById("submitTaskBtn");
+
+submitTaskBtn?.addEventListener("click", async () => {
+
+    const quantity = parseInt(quantityInput.value);
+    const link = document.getElementById("taskLink").value;
+    const platform = document.getElementById("taskPlatform").value;
+
+    if (!platform) {
+        alert("Please select a platform.");
+        return;
+    }
+
+    if (!quantity || quantity <= 0) {
+        alert("Enter a valid quantity.");
+        return;
+    }
+
+    if (!link) {
+        alert("Enter your link.");
+        return;
+    }
+
+    submitTaskBtn.disabled = true;
+
+    try {
+        const res = await fetch("/create-task/", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                platform: platform,
+                followers: quantity,
+                link: link
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.error || "Something went wrong.");
+            return;
+        }
+
+        alert("Task created successfully!");
+
+        // update balance UI instantly
+        document.getElementById("balanceAmount").textContent =
+            "£" + parseFloat(data.new_balance).toFixed(2);
+
+        taskModal.style.display = "none";
+
+        loadUser();
+        loadTasks();
+
+    } catch (err) {
+        alert("Network error.");
+    }
+
+    submitTaskBtn.disabled = false;
+});
+
+
 
   // ================================
   // LOGOUT

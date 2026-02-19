@@ -425,6 +425,60 @@ def get_single_task(request, task_id):
 
     return JsonResponse(data)
 
+# ==========================
+# CREATE TASK
+# ==========================
+# ==========================
+# CREATE TASK (POST FROM FORM)
+# ==========================
+
+@csrf_exempt
+@login_required
+def create_task(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST required"}, status=400)
+
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+
+        platform = data.get("platform")
+        followers = int(data.get("followers"))
+        link = data.get("link")
+
+    except Exception:
+        return JsonResponse({"error": "Invalid data"}, status=400)
+
+    payout_per_action = Decimal("5.00")
+    total_cost = payout_per_action * followers
+
+    user = request.user
+
+    # ✅ CHECK BALANCE
+    if user.balance < total_cost:
+        return JsonResponse({"error": "Insufficient balance"}, status=400)
+
+    # ✅ DEDUCT BALANCE
+    user.balance -= total_cost
+    user.save(update_fields=["balance"])
+
+    # ✅ CREATE TASK
+    Task.objects.create(
+        creator=user,  # make sure this field exists in model
+        title=f"{platform} Followers Task",
+        payout=payout_per_action,
+        available=followers,
+        platforms=platform,
+        link=link,
+        short_desc="Follow the page and earn.",
+        total_budget=total_cost
+    )
+
+    return JsonResponse({
+        "message": "Task created successfully",
+        "new_balance": str(user.balance)
+    })
+
+
 @login_required
 def more_page(request):
     return render(request, "more.html")
@@ -432,3 +486,4 @@ def more_page(request):
 
 def earnings(request):
     return render(request, "earnings.html")
+

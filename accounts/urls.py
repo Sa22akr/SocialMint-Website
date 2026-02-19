@@ -27,6 +27,7 @@ from .views import (
     mark_as_sold,
     seller_history,
     earnings,
+    create_task,
 )
 
 
@@ -84,7 +85,7 @@ urlpatterns = [
 # ======================
 path("api/tasks/", get_tasks, name="tasks_api"),
 path("api/task/<int:task_id>/", get_task, name="task_single_api"),
-
+path("create-task/", create_task, name="create_task"),
 path("more/", more_page, name="more_page"),
 
 
