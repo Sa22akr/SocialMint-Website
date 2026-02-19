@@ -252,8 +252,9 @@ def user_info(request):
         "balance": str(user.balance),
         "earnings": str(user.earnings),
 
-        "tasks_completed": getattr(user, "tasks_completed", 0),
-        "referrals": getattr(user, "referrals", 0),
+        "tasks_completed": user.tasks_completed,
+        "referrals": user.referrals,
+        "is_member": user.is_member,
 
         "referral_link": f"http://127.0.0.1:8000/signup/?ref={user.username}"
     })

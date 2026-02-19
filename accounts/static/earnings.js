@@ -5,10 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // ================================
   const money = (n) => `£${parseFloat(n || 0).toFixed(2)}`;
 
+    const membershipSection = document.getElementById("membershipSection");
+  const taskSection = document.getElementById("taskSection");
+  const payMembershipBtn = document.getElementById("payMembershipBtn");
 
-  // ================================
-  // LOAD USER INFO
-  // ================================
+  
+  // ================= LOAD USER =================
   async function loadUser() {
     try {
       const res = await fetch("/api/user-info/", { credentials: "include" });
@@ -24,17 +26,55 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("usernameTag").textContent = "@" + data.username;
       document.getElementById("usernameDynamic").textContent = data.username;
 
-      document.getElementById("followers").textContent = data.followers || 0;
-      document.getElementById("following").textContent = data.following || 0;
+      if (data.is_member) {
+        membershipSection.style.display = "none";
+        taskSection.style.display = "block";
+        loadTasks();
+      } else {
+        membershipSection.style.display = "block";
+        taskSection.style.display = "none";
+      }
 
     } catch (err) {
-      console.error("USER LOAD ERROR:", err);
-      window.location.href = "/login/";
+      console.error("User load error:", err);
     }
   }
 
+// ================= LOAD TASKS =================
+  async function loadTasks() {
+    try {
+      const res = await fetch("/api/tasks/", { credentials: "include" });
 
+      if (!res.ok) {
+        console.log("Not allowed to see tasks.");
+        return;
+      }
 
+      const data = await res.json();
+      const taskList = document.getElementById("taskList");
+
+      taskList.innerHTML = "";
+
+      if (data.tasks.length === 0) {
+        taskList.innerHTML = "<p>No tasks available.</p>";
+        return;
+      }
+
+      data.tasks.forEach(task => {
+        taskList.innerHTML += `
+          <div style="background:#fff;padding:15px;margin-bottom:15px;border-radius:10px;">
+            <h3>${task.title}</h3>
+            <p>${task.instructions}</p>
+            <p><strong>£${task.payout}</strong> per action</p>
+            <p>${task.available} tasks remaining</p>
+          </div>
+        `;
+      });
+
+    } catch (err) {
+      console.error("Task load error:", err);
+    }
+  }
 
   // ================================
   // LOGOUT
@@ -57,42 +97,39 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", logout);
   });
 
- // ================================
-// MEMBERSHIP JS
-// ================================
-const payMembershipBtn = document.getElementById("payMembershipBtn");
-
-payMembershipBtn?.addEventListener("click", async () => {
+ // ================= MEMBERSHIP PAYMENT =================
+  payMembershipBtn?.addEventListener("click", async () => {
 
     payMembershipBtn.disabled = true;
 
     try {
-        const res = await fetch("/pay-membership/", {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" }
-        });
+      const res = await fetch("/pay-membership/", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" }
+      });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (!res.ok) {
-            alert(data.error);
-            payMembershipBtn.disabled = false;
-            return;
-        }
+      if (!res.ok) {
+        alert(data.error);
+        payMembershipBtn.disabled = false;
+        return;
+      }
 
-        alert("Membership Activated!");
+      alert("Membership Activated!");
 
-        window.location.href = "/dashboard/";
+      membershipSection.style.display = "none";
+      taskSection.style.display = "block";
+
+      loadTasks();
 
     } catch (err) {
-        alert("Network error.");
+      alert("Network error.");
     }
 
     payMembershipBtn.disabled = false;
-});
-
-
+  });
 
  
   // ================================
@@ -254,5 +291,9 @@ window.addEventListener("click", function (e) {
         taskModal.style.display = "none";
     }
 });
+
+
+
+
 
 
