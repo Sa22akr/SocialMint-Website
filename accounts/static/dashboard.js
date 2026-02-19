@@ -183,6 +183,90 @@ document.addEventListener("DOMContentLoaded", () => {
     fundSubmitBtn.disabled = false;
   });
 
+  
+  // ================================
+// WITHDRAW MODAL (OPEN -> INPUT -> WITHDRAW)
+// ================================
+const withdrawModal = document.getElementById("withdrawModal");
+const withdrawBtn = document.querySelector(".withdraw");
+const withdrawClose = document.getElementById("withdrawClose");
+const withdrawAmountInput = document.getElementById("withdrawAmountInput");
+const sortCodeInput = document.getElementById("sortCodeInput");
+const accountNumberInput = document.getElementById("accountNumberInput");
+const withdrawSubmitBtn = document.getElementById("withdrawSubmitBtn");
+const withdrawMsg = document.getElementById("withdrawMsg");
+
+function openWithdrawModal() {
+  if (!withdrawModal) return;
+  withdrawMsg.textContent = "";
+  withdrawAmountInput.value = "";
+  sortCodeInput.value = "";
+  accountNumberInput.value = "";
+  withdrawModal.style.display = "flex";
+  withdrawAmountInput.focus();
+}
+
+function closeWithdrawModal() {
+  if (!withdrawModal) return;
+  withdrawModal.style.display = "none";
+}
+
+withdrawBtn?.addEventListener("click", openWithdrawModal);
+withdrawClose?.addEventListener("click", closeWithdrawModal);
+
+withdrawModal?.addEventListener("click", (e) => {
+  if (e.target === withdrawModal) closeWithdrawModal();
+});
+
+// basic formatting helpers (optional)
+sortCodeInput?.addEventListener("input", () => {
+  // allow digits and hyphen only
+  sortCodeInput.value = sortCodeInput.value.replace(/[^\d-]/g, "");
+});
+
+accountNumberInput?.addEventListener("input", () => {
+  accountNumberInput.value = accountNumberInput.value.replace(/[^\d]/g, "");
+});
+
+withdrawSubmitBtn?.addEventListener("click", async () => {
+  const amount = withdrawAmountInput.value;
+  const sort_code = sortCodeInput.value;
+  const account_number = accountNumberInput.value;
+
+  withdrawSubmitBtn.disabled = true;
+  withdrawMsg.textContent = "Processing...";
+
+  try {
+    const res = await fetch("/api/demo-withdraw/", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount, sort_code, account_number })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      withdrawMsg.textContent = data.error || "Withdrawal failed.";
+      return;
+    }
+
+    // update UI instantly
+    document.getElementById("balanceAmount").textContent = money(data.balance);
+
+    // resync from backend
+    loadUser();
+
+    withdrawMsg.textContent = "Withdrawal successful (demo)!";
+    setTimeout(closeWithdrawModal, 700);
+
+  } catch (err) {
+    console.error("WITHDRAW ERROR:", err);
+    withdrawMsg.textContent = "Network error. Try again.";
+  } finally {
+    withdrawSubmitBtn.disabled = false;
+  }
+});
 
   // ================================
   // INIT
@@ -339,87 +423,3 @@ window.addEventListener("click", function (e) {
 });
 
 
-
-  // ================================
-// WITHDRAW MODAL (OPEN -> INPUT -> WITHDRAW)
-// ================================
-const withdrawModal = document.getElementById("withdrawModal");
-const withdrawBtn = document.querySelector(".withdraw");
-const withdrawClose = document.getElementById("withdrawClose");
-const withdrawAmountInput = document.getElementById("withdrawAmountInput");
-const sortCodeInput = document.getElementById("sortCodeInput");
-const accountNumberInput = document.getElementById("accountNumberInput");
-const withdrawSubmitBtn = document.getElementById("withdrawSubmitBtn");
-const withdrawMsg = document.getElementById("withdrawMsg");
-
-function openWithdrawModal() {
-  if (!withdrawModal) return;
-  withdrawMsg.textContent = "";
-  withdrawAmountInput.value = "";
-  sortCodeInput.value = "";
-  accountNumberInput.value = "";
-  withdrawModal.style.display = "flex";
-  withdrawAmountInput.focus();
-}
-
-function closeWithdrawModal() {
-  if (!withdrawModal) return;
-  withdrawModal.style.display = "none";
-}
-
-withdrawBtn?.addEventListener("click", openWithdrawModal);
-withdrawClose?.addEventListener("click", closeWithdrawModal);
-
-withdrawModal?.addEventListener("click", (e) => {
-  if (e.target === withdrawModal) closeWithdrawModal();
-});
-
-// basic formatting helpers (optional)
-sortCodeInput?.addEventListener("input", () => {
-  // allow digits and hyphen only
-  sortCodeInput.value = sortCodeInput.value.replace(/[^\d-]/g, "");
-});
-
-accountNumberInput?.addEventListener("input", () => {
-  accountNumberInput.value = accountNumberInput.value.replace(/[^\d]/g, "");
-});
-
-withdrawSubmitBtn?.addEventListener("click", async () => {
-  const amount = withdrawAmountInput.value;
-  const sort_code = sortCodeInput.value;
-  const account_number = accountNumberInput.value;
-
-  withdrawSubmitBtn.disabled = true;
-  withdrawMsg.textContent = "Processing...";
-
-  try {
-    const res = await fetch("/api/demo-withdraw/", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount, sort_code, account_number })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      withdrawMsg.textContent = data.error || "Withdrawal failed.";
-      return;
-    }
-
-    // update UI instantly
-    document.getElementById("balanceAmount").textContent = money(data.balance);
-
-    // resync from backend
-    loadUser();
-
-    withdrawMsg.textContent = "Withdrawal successful (demo)!";
-    setTimeout(closeWithdrawModal, 700);
-
-  } catch (err) {
-    console.error("WITHDRAW ERROR:", err);
-    withdrawMsg.textContent = "Network error. Try again.";
-  } finally {
-    withdrawSubmitBtn.disabled = false;
-  }
-});

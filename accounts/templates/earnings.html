@@ -1,195 +1,387 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SocialMint — Earnings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialMint Dashboard</title>
 
-  <!-- ICONS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="{% static 'earnings.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
 
-<!-- ========================= NAV ========================= -->
-<header class="earn-header">
-  <nav class="earn-nav container">
+<!-- ====================== HEADER ====================== -->
+<header class="topbar">
 
-    <a class="nav-logo" href="{% url 'homepage' %}">
-      <img src="{% static 'img/logo.png' %}" alt="SocialMint Logo">
+    <div class="logo">
+    <a href="{% url 'dashboard' %}">
+        <img src="{% static 'img/logo.png' %}" alt="Logo">
     </a>
+</div>
 
-    <ul class="nav-links">
-      <li><a href="{% url 'homepage' %}">Home</a></li>
-      <li><a href="{% url 'about_page' %}">About</a></li>
-      <li><a class="active" href="#">Earnings</a></li>
-      <li><a href="#">Marketplace</a></li>
-      <li><a href="#">Support</a></li>
-    </ul>
 
-    <ul class="nav-actions">
-      <li><a class="login" href="{% url 'login_page' %}">Login</a></li>
-      <li><a class="btn-primary" href="{% url 'signup_page' %}">Create Account</a></li>
-    </ul>
+    <div class="search-bar">
+        <i class="fa fa-search"></i>
+        <input type="text" placeholder="Search Products/Services">
+    </div>
 
-  </nav>
+    <nav class="main-nav">
+
+        <a href="{% url 'dashboard' %}"><i class="fa fa-home"></i> Home</a>
+        <a href="#"><i class="fa fa-coins"></i> Earn</a>
+        <a href="#"><i class="fa fa-bullhorn"></i> Advertise</a>
+        <a href="{% url 'marketplace' %}"><i class="fa fa-store"></i> Market</a>
+
+        <!-- ⭐ REPLACED DROPDOWN WITH NORMAL LINK -->
+        <a href="{% url 'more_page' %}">
+            <i class="fa fa-ellipsis-h"></i> More
+        </a>
+
+        <!-- Notification + Profile -->
+        <div class="top-icons">
+            <div class="notification">
+                <i class="fa fa-bell"></i>
+                <span class="badge">99+</span>
+            </div>
+
+            <div class="profile-dropdown">
+                <img src="{% static 'img/avatar.png' %}" class="profile-avatar">
+                <i class="fa fa-caret-down"></i>
+
+                <div class="profile-menu">
+                    <a href="#"><i class="fa fa-user"></i> My Profile</a>
+                    <a href="#"><i class="fa fa-bell"></i> Notifications</a>
+                    <a href="#"><i class="fa fa-wallet"></i> Wallet</a>
+                    <a href="{% url 'more_page' %}">
+                        <i class="fa fa-ellipsis-h"></i> Settings
+                    </a>
+                    <a href="#" class="logout">
+                        <i class="fa fa-power-off"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </nav>
+
 </header>
 
 
-<!-- ========================= HERO ========================= -->
-<section class="earn-hero container">
 
-  <h1>Earn in Multiple Ways</h1>
+<!-- ====================== PAGE WRAPPER ====================== -->
+<div class="dashboard-container">
 
-  <p class="sub">
-    Earn daily by posting adverts, reselling products and performing social tasks.
-  </p>
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar">
+        <div class="user-card">
+            <img src="{% static 'img/avatar.png' %}" class="avatar-big">
 
-  <p class="note">
-    One-time activation fee of £10 is required to start earning.
-  </p>
+            <h2 id="usernameDisplay"></h2>
+            <p id="usernameTag"></p>
 
-  <div class="hero-buttons">
+            <div class="follow-box">
+                <span><strong id="followers">0</strong> Followers</span>
+                <span><strong id="following">0</strong> Following</span>
+            </div>
+        </div>
 
-    <button class="big-btn yellow">
-      CLICK TO RESELL PRODUCTS & EARN UP TO £1000 MONTHLY
-      <span class="tag">HOT</span>
-    </button>
+        <div class="side-feature">
+            <p>Earn daily by posting adverts & completing tasks on social media</p>
+        </div>
 
-    <div class="split-buttons">
-      <button class="big-btn green">POST ADVERTS</button>
-      <button class="big-btn white">ENGAGEMENT TASKS</button>
-    </div>
+        <div class="side-feature">
+            <p>Get people to repost & share your adverts</p>
+        </div>
 
-  </div>
+        <div class="side-feature">
+            <p>Advertise anything in the marketplace</p>
+        </div>
 
-</section>
-
-
-<!-- ========================= TASK GRID ========================= -->
-<section class="task-grid container">
-
-  {% comment %}
-  Repeatable item — could be made dynamic later
-  {% endcomment %}
-
-  <article class="task-card">
-    <img src="{% static 'img/instagram.png' %}">
-    <h3>Post Adverts on Instagram</h3>
-    <p class="earn">Earnings: £1 per Advert Post</p>
-    <button class="select">SELECT</button>
-  </article>
-
-  <article class="task-card">
-    <img src="{% static 'img/twitter.png' %}">
-    <h3>Post Adverts on Twitter</h3>
-    <p class="earn">Earnings: £1 per Advert Post</p>
-    <button class="select">SELECT</button>
-  </article>
-
-  <article class="task-card">
-    <img src="{% static 'img/tiktok.png' %}">
-    <h3>Post Adverts on TikTok</h3>
-    <p class="earn">Earnings: £1 per Advert Post</p>
-    <button class="select">SELECT</button>
-  </article>
-
-  <article class="task-card">
-    <img src="{% static 'img/facebook.png' %}">
-    <h3>Post Adverts on Facebook</h3>
-    <p class="earn">Earnings: £1 per Advert Post</p>
-    <button class="select">SELECT</button>
-  </article>
-
-  <article class="task-card">
-    <img src="{% static 'img/whatsapp.png' %}">
-    <h3>Post Adverts on WhatsApp</h3>
-    <p class="earn">Earnings: £0.50 per Status Post</p>
-    <button class="select">SELECT</button>
-  </article>
-
-</section>
+        <div class="side-feature">
+            <p>Refer friends and earn up to £5 when they register and complete their first task</p>
+        </div>
+    </aside>
 
 
-<!-- ========================= CTA ========================= -->
-<section class="cta container">
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="main-area">
 
-  <h2>Advertise & Earn Daily</h2>
-  <p class="sub">Join thousands earning income with SocialMint.</p>
+        <!-- ==== BALANCE CARD ==== -->
+        <section class="balance-section">
+            <p class="welcome-text">Welcome, <strong><span id="usernameDynamic"></span></strong> 👋</p>
 
-  <div class="cta-buttons">
-    <a class="btn-green" href="{% url 'signup_page' %}">CREATE FREE ACCOUNT</a>
-    <a class="btn-outline" href="{% url 'login_page' %}">LOGIN</a>
-  </div>
+  <div class="balance-card">
 
-</section>
+            <section class="membership-section">
 
- <footer class="site-footer">
+                <div class="membership-container">
 
-  <div class="footer-top">
-    <div class="footer-cta">
-      <h3>Advertise and Earn Daily With SocialMint</h3>
-      <p>Join thousands of people using SocialMint.</p>
-      <div class="cta-actions">
-        <a class="btn primary btn-xl" href="{% url 'signup_page' %}">Create Free Account</a>
-        <a class="btn outline btn-xl" href="{% url 'login_page' %}">Login</a>
+                    <p class="small-title">Become a Member Today</p>
+
+                    <h1 class="main-title">
+                        Turn Your Social Media Accounts into a
+                        <span>Money Making Machine!</span>
+                    </h1>
+
+                    <p class="intro-text">
+                        Activate your account and enjoy the following benefits:
+                    </p>
+
+                    <ul class="benefits-list">
+                        <li><strong>Earn steady daily figures</strong></li>
+                        <li><strong>Earn Instant Referral Commission</strong></li>
+                        <li><strong>Earn Social Boost Referral Commission</strong></li>
+                        <li><strong>Start Your Airtime/Data Business</strong></li>
+                        <li><strong>Sell Anything on SocialMint Market</strong></li>
+                    </ul>
+
+                    <p class="extra-text">
+                        ...and so much more benefits for you!
+                    </p>
+
+                    <p class="terms-warning">
+                        Please read the terms of membership outlined below before you proceed.
+                    </p>
+
+                </div>
+
+                <!-- ===== TERMS BOX ===== -->
+                <div class="terms-box">
+
+                    <h3>Terms of Membership</h3>
+
+                    <p>
+                        By proceeding with registering as a member, you automatically
+                        accept all the terms of membership outlined below.
+                    </p>
+
+                    <ol>
+                        <li>
+                            As a member, you can earn referral bonuses:
+                            <ul>
+                                <li><strong>Instant Referral Commission</strong></li>
+                                <li><strong>Social Boost Referral Commission</strong></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            SocialMint reserves the right to cancel membership
+                            if a user violates the terms of service.
+                        </li>
+
+                        <li>
+                            SocialMint may cancel accounts involved in harmful activities.
+                            Cancelled members may forfeit wallet funds.
+                        </li>
+
+                        <li>
+                            Referral commissions may be withheld if activities
+                            damage brand reputation.
+                        </li>
+
+                        <li>
+                            Inactive accounts (3 months) may be removed
+                            and funds cleared.
+                        </li>
+
+                        <li>
+                            SocialMint wallets are not savings accounts.
+                            We are not a financial institution.
+                        </li>
+
+                        <li>
+                            Withdrawals are processed within 7–14 days.
+                        </li>
+
+                        <li>
+                            Maximum daily withdrawal limit is £1,000 per day.
+                        </li>
+                    </ol>
+
+                </div>
+
+                <!-- MEMBERSHIP FEE BOX -->
+                <div class="membership-fee-box">
+
+                    <div class="fee-left">
+                        <p class="fee-label">Membership Fee</p>
+                        <h2 class="fee-amount">£10</h2>
+                    </div>
+
+                    <div class="fee-right">
+                        <a href="#" class="pay-btn">
+                            CLICK HERE TO PAY NOW
+                        </a>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </section>
+
+    </main>
+
+
+    <!-- ========== RIGHT PANEL ========== -->
+    <aside class="right-panel">
+
+        <h3>Recent Activities</h3>
+        <p class="sub">See what people are doing on SocialMint</p>
+
+        <div class="activity">
+            <img src="{% static 'img/facebook.png' %}">
+            <p><strong>@cashkid233</strong> just earned £1</p>
+        </div>
+
+        <div class="activity">
+            <img src="{% static 'img/instagram.png' %}">
+            <p><strong>@zeso</strong> just earned £0.50</p>
+        </div>
+
+        <div class="activity">
+            <img src="{% static 'img/twitter.png' %}">
+            <p><strong>@collins21</strong> just earned £0.50</p>
+        </div>
+
+        <a href="#" class="view-more">View More</a>
+
+    </aside>
+
+</div>
+
+<!-- =====================================================
+     EARN POPUP MODAL — SAME LAYOUT AS AD MODAL
+===================================================== -->
+<div class="ad-modal-bg" id="earnModal">
+  <div class="ad-modal">
+
+    <button class="ad-close" id="earnClose">✖</button>
+
+    <h2 class="ad-title">How do you want to earn today?</h2>
+
+    <div class="ad-options">
+
+      <!-- CARD 1 -->
+      <div class="ad-card">
+        <h3>Perform Social Tasks and Earn Daily</h3>
+
+        <div class="ad-icons">
+          <p>
+            <img src="{% static 'img/facebook.png' %}">
+            <img src="{% static 'img/instagram.png' %}">
+          </p>
+          <img src="{% static 'img/whatsapp.png' %}">
+          <img src="{% static 'img/twitter.png' %}">
+        </div>
+
+        <p>
+          Earn daily by posting adverts and completing
+          social tasks across your social media accounts.
+        </p>
+
+        <button class="ad-btn" onclick="window.location.href='{% url 'dashboard' %}'">
+  GET STARTED
+</button>
       </div>
-    </div>
-  </div>
 
-  <div class="container footer-links">
-    
-    <div>
-      <h5>Company</h5>
-      <ul>
-        <li><a href="{% url 'about_page' %}">About</a></li>
-        <li><a href="#">Terms</a></li>
-        <li><a href="#">Privacy</a></li>
-      </ul>
-    </div>
+      <!-- CARD 2 -->
+      <div class="ad-card">
+        <h3>Resell Products and Earn Commissions</h3>
 
-    <div>
-      <h5>Quick Links</h5>
-      <ul>
-        <li><a href="{% url 'signup_page' %}">Create Account</a></li>
-        <li><a href="{% url 'login_page' %}">Login</a></li>
-        <li><a href="{% url 'earnings_page' %}">Earnings</a></li>
-      </ul>
-    </div>
+        <img class="ad-img" src="{% static 'img/money.png' %}">
 
-    <div>
-      <h5>Support</h5>
-      <ul>
-        <li><a href="#">Help</a></li>
-        <li><a href="#">FAQ</a></li>
-      </ul>
-    </div>
+        <p>
+          Resell products from sellers and brands and
+          earn up to £1,000 monthly in commissions.
+        </p>
 
-    <div>
-      <h5>Contact</h5>
-      <p class="contact-line">
-        <i class="fa-regular fa-envelope"></i> elkingsman.xo@gmail.com
-      </p>
-      <div class="socials">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+       <button class="ad-btn" onclick="window.location.href='{% url 'marketplace' %}'">
+  GET STARTED
+</button>
+
       </div>
+
     </div>
 
   </div>
+</div>
 
-  <div class="container copyright">
-    <p>SocialMint © <span id="year"></span>. All Rights Reserved</p>
+
+
+<!-- =====================================================
+     ADVERTISE POPUP MODAL
+===================================================== -->
+<div class="ad-modal-bg" id="adModal">
+  <div class="ad-modal">
+
+    <button class="ad-close" id="adClose">✖</button>
+
+    <h2 class="ad-title">Choose your advert package below:</h2>
+
+    <div class="ad-options">
+
+      <!-- ==========================
+           CARD 1 – SOCIALMINT MARKET
+      =========================== -->
+      <div class="ad-card">
+        <h3>Advertise on SocialMint Market</h3>
+
+        <img class="ad-img" src="{% static 'img/market.png' %}">
+
+        <p>
+          Take massive advantage of the huge traffic
+          on SocialMint and advertise your products/services
+          directly to thousands of buyers on SocialMint Market.
+        </p>
+
+        <button class="ad-btn" onclick="window.location.href='{% url 'marketplace' %}'">
+  GET STARTED
+</button>
+
+      </div>
+
+
+      <!-- ==========================
+           CARD 2 – SOCIAL MEDIA ADS
+      =========================== -->
+      <div class="ad-card">
+        <h3>Advertise On Social Media</h3>
+
+        <div class="ad-icons">
+          <p>
+            <img src="{% static 'img/facebook.png' %}">
+            <img src="{% static 'img/instagram.png' %}">
+          </p>
+          <img src="{% static 'img/whatsapp.png' %}">
+          <img src="{% static 'img/twitter.png' %}">
+        </div>
+
+        <p>
+          Get people with at least 1000 active followers
+          to repost your adverts and perform social tasks
+          for you on their social media accounts.
+        </p>
+
+        <button class="ad-btn" onclick="window.location.href='{% url 'dashboard' %}'">
+  GET STARTED
+</button>
+      </div>
+
+    </div>
+
   </div>
+</div>
 
-</footer>
+</div>
 
 
 
+<!-- ====================== JS ====================== -->
 <script src="{% static 'earnings.js' %}"></script>
 
 </body>

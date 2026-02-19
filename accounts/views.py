@@ -32,9 +32,6 @@ def about(request):
 def forgot_password_page(request):
     return render(request, "forgot_password.html")
 
-def earnings_page(request):
-    return render(request, "earnings.html")
-
 def marketplace_page(request):
     category = request.GET.get("category")
 
@@ -431,3 +428,7 @@ def get_single_task(request, task_id):
 @login_required
 def more_page(request):
     return render(request, "more.html")
+
+
+def earnings(request):
+    return render(request, "earnings.html")

@@ -371,7 +371,7 @@ Get People to Subscribe on your Youtube Channel</h3>
           social tasks across your social media accounts.
         </p>
 
-        <button class="ad-btn" onclick="window.location.href='{% url 'dashboard' %}'">
+        <button class="ad-btn" onclick="window.location.href='{% url 'earnings' %}'">
   GET STARTED
 </button>
       </div>
@@ -498,7 +498,6 @@ Get People to Subscribe on your Youtube Channel</h3>
     <h2 class="modal-title">Withdraw</h2>
     <p class="modal-sub">Enter your bank details (demo) and amount.</p>
 
-    <!-- Amount -->
     <input
       type="number"
       id="withdrawAmountInput"
@@ -508,16 +507,14 @@ Get People to Subscribe on your Youtube Channel</h3>
       step="0.01"
     />
 
-    <!-- Sort Code -->
     <input
       type="text"
       id="sortCodeInput"
       class="modal-input"
-      placeholder="Sort code (6 digits e.g. 123456)"
-      maxlength="6"
+      placeholder="Sort code (e.g. 12-34-56)"
+      maxlength="8"
     />
 
-    <!-- Account Number -->
     <input
       type="text"
       id="accountNumberInput"
@@ -526,13 +523,11 @@ Get People to Subscribe on your Youtube Channel</h3>
       maxlength="8"
     />
 
-    <button class="modal-action" id="withdrawSubmitBtn">
-      Withdraw
-    </button>
+    <button class="modal-action" id="withdrawSubmitBtn">Withdraw</button>
 
     <p class="modal-msg" id="withdrawMsg"></p>
   </div>
-</div>
+  </div>
 
 
 <!-- ================= TASK ACTION MODAL ================= -->

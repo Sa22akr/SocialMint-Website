@@ -2,7 +2,6 @@ from django.urls import path
 from .views import (
     homepage,
     about,
-    earnings_page,
     login_page,
     signup_page,
     signup,
@@ -27,6 +26,7 @@ from .views import (
     edit_product,
     mark_as_sold,
     seller_history,
+    earnings,
 )
 
 
@@ -39,9 +39,9 @@ urlpatterns = [
     path("", homepage, name="homepage"),
     path("about/", about, name="about_page"),     # ⭐ FIXED
 
-    path("earnings/", earnings_page, name="earnings_page"),
     path("login/", login_page, name="login_page"),
     path("signup/", signup_page, name="signup_page"),
+    path('earnings/', earnings, name='earnings'),
 
     # ======================
     # PROTECTED DASHBOARD
@@ -56,6 +56,7 @@ urlpatterns = [
     path("api/logout/", logout_user, name="logout_api"),
     path("market/", marketplace_page, name="marketplace"),
     path("sell/", sell_product, name="sell_product"),
+    
 
     # ======================
     # USER DATA API
