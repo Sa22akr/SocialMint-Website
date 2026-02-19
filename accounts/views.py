@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import logout
 from accounts.models import Task
 from decimal import Decimal
-from .models import Product, ProductImage
+from .models import Product, ProductImage, TaskCompletion
 
 from django.contrib import messages
 import json
@@ -379,19 +379,30 @@ def delete_product(request, product_id):
 @login_required
 def get_tasks(request):
 
-    # 🔒 BLOCK NON-MEMBERS
+    # 🔒 Block non-members
     if not request.user.is_member:
         return JsonResponse({
             "error": "Membership required to access tasks."
         }, status=403)
 
+    # 1️⃣ Get tasks that still have availability
     tasks = Task.objects.filter(available__gt=0)
+
+    # 2️⃣ Exclude tasks created by this user
+    tasks = tasks.exclude(creator=request.user)
+
+    # 3️⃣ Exclude tasks already completed by this user
+    completed_task_ids = TaskCompletion.objects.filter(
+        user=request.user
+    ).values_list("task_id", flat=True)
+
+    tasks = tasks.exclude(id__in=completed_task_ids)
 
     data = [
         {
             "id": t.id,
             "title": t.title,
-            "payout": t.payout,
+            "payout": str(t.payout),
             "available": t.available,
             "icon": t.icon,
             "instructions": t.instructions,
@@ -405,25 +416,24 @@ def get_tasks(request):
     return JsonResponse({"tasks": data})
 
 
-
-@login_required
-def get_single_task(request, task_id):
-    task = get_object_or_404(Task, id=task_id)
-
-    data = {
-        "id": task.id,
-        "title": task.title,
-        "payout": task.payout,
-        "available": task.available,
-        "icon": task.icon
-    }
-
-    return JsonResponse(data)
-
-
 # ==========================
 # CREATE TASK (POST FROM FORM)
 # ==========================
+
+@login_required
+def get_single_task(request, task_id):
+    try:
+        task = Task.objects.get(id=task_id)
+    except Task.DoesNotExist:
+        return JsonResponse({"error": "Task not found"}, status=404)
+
+    return JsonResponse({
+        "id": task.id,
+        "title": task.title,
+        "instructions": task.instructions,
+        "payout": task.payout,
+        "available": task.available,
+    })
 
 @csrf_exempt
 @login_required
@@ -469,6 +479,44 @@ def create_task(request):
     return JsonResponse({
         "message": "Task created successfully",
         "new_balance": str(user.balance)
+    })
+
+@csrf_exempt
+@login_required
+def complete_task(request, task_id):
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST required"}, status=400)
+
+    task = get_object_or_404(Task, id=task_id)
+
+    # 🚫 Creator cannot complete own task
+    if task.creator == request.user:
+        return JsonResponse({"error": "You cannot complete your own task"}, status=400)
+
+    # 🚫 Already completed
+    if TaskCompletion.objects.filter(user=request.user, task=task).exists():
+        return JsonResponse({"error": "You already completed this task"}, status=400)
+
+    if task.available <= 0:
+        return JsonResponse({"error": "No slots remaining"}, status=400)
+
+    # ✅ Reduce availability
+    task.available -= 1
+    task.save(update_fields=["available"])
+
+    # ✅ Record completion
+    TaskCompletion.objects.create(user=request.user, task=task)
+
+    # ✅ Pay user
+    request.user.balance += task.payout
+    request.user.tasks_completed += 1
+    request.user.earnings += task.payout
+    request.user.save(update_fields=["balance", "tasks_completed", "earnings"])
+
+    return JsonResponse({
+        "message": "Task completed!",
+        "new_balance": str(request.user.balance)
     })
 
 

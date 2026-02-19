@@ -43,7 +43,20 @@ class Task(models.Model):
         return self.title
 
 
-    
+class TaskCompletion(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    proof = models.ImageField(upload_to="task_proofs/", null=True, blank=True)
+    approved = models.BooleanField(default=True)  # auto approve for now
+    completed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "task")  # 🚀 prevents duplicate completion
+
+    def __str__(self):
+        return f"{self.user.username} completed {self.task.title}"
+
+
 
 class Product(models.Model):
     seller = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -330,9 +330,11 @@ a {
     align-items: center;
 }
 
-
-
-
+.select-task-btn {
+  cursor: pointer;
+  z-index: 5;
+  position: relative;
+}
 
 
 .tag {

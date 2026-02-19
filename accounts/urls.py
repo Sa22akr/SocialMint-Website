@@ -10,7 +10,6 @@ from .views import (
     dashboard,
     user_info,
     get_tasks,
-    get_single_task,
     more_page,
     forgot_password_page,   
     forgot_password_api,
@@ -28,6 +27,8 @@ from .views import (
     earnings,
     create_task,
     pay_membership,
+    complete_task,
+    get_single_task,
 )
 
 
@@ -86,8 +87,9 @@ urlpatterns = [
 # ======================
 path("api/tasks/", get_tasks, name="tasks_api"),
 path("create-task/", create_task, name="create_task"),
+path("api/complete-task/<int:task_id>/", complete_task, name="complete_task"),
 path("more/", more_page, name="more_page"),
-
+path("api/task/<int:task_id>/", get_single_task, name="get_single_task"),
 
         # ======================
     # PASSWORD RESET (NEW)

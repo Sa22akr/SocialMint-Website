@@ -265,6 +265,28 @@
 
 </div>
 
+<!-- TASK DETAIL MODAL -->
+<div id="taskModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+  <div style="background:white; padding:25px; width:400px; border-radius:12px;">
+
+    <h3 id="modalTaskTitle"></h3>
+    <p id="modalTaskInstructions"></p>
+    <p><strong id="modalTaskReward"></strong></p>
+
+    <input type="file" id="proofInput" accept="image/*" style="margin:15px 0;">
+
+    <button id="submitProofBtn" style="padding:8px 15px;background:#00b894;color:white;border:none;border-radius:6px;">
+      Submit Proof
+    </button>
+
+    <button id="cancelTaskBtn"
+            style="margin-left:10px;padding:8px 15px;background:#d63031;color:white;border:none;border-radius:6px;">
+      Cancel
+    </button>
+
+  </div>
+</div>
+
 <!-- =====================================================
      EARN POPUP MODAL — SAME LAYOUT AS AD MODAL
 ===================================================== -->
@@ -389,8 +411,6 @@
 </div>
 
 </div>
-
-
 
 <!-- ====================== JS ====================== -->
 <script src="{% static 'earnings.js' %}"></script>
